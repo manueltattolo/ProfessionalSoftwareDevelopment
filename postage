@@ -1,0 +1,69 @@
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
+/**
+ * Created by Emanuele Tattolo on 30/10/2020
+ * Program to read Key Customer details and calculate postage cost
+ **/
+ 
+public class Postage
+{  static Scanner keyboard = new Scanner(System.in);
+
+   public static String getName(String prompt)
+   {
+       System.out.print(prompt);
+       return keyboard.nextLine().toUpperCase();
+   }
+
+   public static int getNumber(String messageNum)
+   {
+       System.out.print(messageNum);
+       return keyboard.nextInt();
+   }
+
+   public static double getWeight(String message, int pcount)
+   {
+       System.out.print(message + pcount + " (in Kg): ");
+       return keyboard.nextDouble();
+   }
+
+   public static double calculateParcelCost(double ppackageWeight)
+   {   final int FIVE = 5; final int TEN = 10;
+       final double COST_S = 4.00; final double COST_M = 7.50; final double COST_L = 10.00;
+
+       if (ppackageWeight <= FIVE)
+       return COST_S;
+       else if (ppackageWeight > FIVE && ppackageWeight < TEN)
+              return COST_M;
+            else
+               return COST_L;
+   }
+
+   public static void main(String[] args)
+   {   DecimalFormat df = new DecimalFormat("0.00");
+       double sumWeights = 0, packageWeight = 0;
+       double packageCost = 0, sumCosts = 0;
+
+       String name = getName("Please enter your name: ");
+       int numberOfParcels = getNumber("How many parcels have you? ");
+
+       if (numberOfParcels == 0)  // assume at least one parcel
+       System.out.println("Wrong Input");
+       else
+       {
+          for (int count = 1; count <= numberOfParcels; count++)
+          {
+             packageWeight = getWeight("Please enter the weight of parcel ", count);
+             packageCost = calculateParcelCost(packageWeight);
+             sumWeights += packageWeight;
+             sumCosts += packageCost;
+          }
+
+          System.out.println("\nName:\t\t\t\t\t\t" + name);
+          System.out.println("Number of parcels:\t\t\t" + numberOfParcels);
+          System.out.println("Total weight of parcels:\t" + df.format(sumWeights) + "kg");
+          System.out.println("Total cost of postage:\t\t£" + df.format(sumCosts));
+       }
+
+   }//main
+}//class
